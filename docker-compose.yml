@@ -1,4 +1,5 @@
 version: '3.9'
+
 services:
   neural-proxy:
     container_name: neural-proxy
@@ -14,9 +15,26 @@ services:
       - site
     restart: unless-stopped
 
+  db:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=db
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - site
+
 networks:
   site:
     driver: bridge
     external: false
 
 
+volumes:
+  postgres_data:
