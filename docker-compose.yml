@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  neural-proxy:
+    container_name: neural-proxy
+    ports:
+      - 3000:3000
+    build: .
+    volumes:
+      - ./:/app
+    working_dir: /app
+    env_file: .env
+    command: sh -c "npm i && npm run build && npm run dev"
+    networks:
+      - site
+    restart: unless-stopped
+
+networks:
+  site:
+    driver: bridge
+    external: false
+
+
