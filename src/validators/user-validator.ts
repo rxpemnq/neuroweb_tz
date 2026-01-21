@@ -31,8 +31,8 @@ export class UserValidator {
     }
 
     if (user.roleId != undefined) {
-      if (!validator.isInt(user.roleId.toString(), { min: 1, max: 3 })) {
-        return { ok: false, message: 'Role ID must be between 1 and 3' }
+      if (!validator.isInt(user.roleId.toString(), { min: 0, max: 1 })) {
+        return { ok: false, message: 'Role ID must be 0 or 1' }
       }
     }
 

@@ -3,8 +3,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
+import { Tokens } from '../../tokens/entity/tokens.entity'
 
 @Entity('users')
 export class Users {
@@ -25,6 +27,11 @@ export class Users {
 
   @Column({ unique: true })
   phone: string
+
+  @OneToOne(() => Tokens, (tokens) => tokens.user, {
+    cascade: true
+  })
+  tokens: Tokens
 
   @CreateDateColumn({ type: 'timestamp' })
   dateCreate: Date

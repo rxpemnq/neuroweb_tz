@@ -1,42 +1,38 @@
-import { UsersModel } from '../../models/users'
+import Models from '../../models/index'
 import { IUser } from '../../models/users/interface'
-import { UserValidator } from '../../validators/user-validator'
 
 export class UsersControllers {
-  private usersModels = new UsersModel()
-  private userValidator = new UserValidator()
+  async create(user: IUser) {
+    const newUser = await Models.UsersModel.create(user)
 
-  async createUser(user: IUser) {
-    const isValid = await this.userValidator.validate(user)
-
-    if (isValid.ok == false) {
-      return isValid
-    } else {
-      return await this.usersModels.create(user)
+    return {
+      ok: true,
+      user: {
+        id: newUser.user.id,
+        roleId: newUser.user.roleId,
+        name: newUser.user.name,
+        email: newUser.user.email,
+        phone: newUser.user.phone,
+        dateCreate: newUser.user.dateCreate
+      }
     }
   }
 
   async getUserById(id: number) {
-    return await this.usersModels.getUserById(id)
+    return await Models.UsersModel.getUserById(id)
   }
 
   async findAll() {
-    return await this.usersModels.findAll()
+    return await Models.UsersModel.findAll()
   }
 
   async updateById(id: number, updateData: Partial<IUser>) {
-    const isValid = await this.userValidator.validate(updateData)
+    const result = await Models.UsersModel.updateById(id, updateData)
 
-    if (isValid.ok == false) {
-      return { ok: isValid.ok, message: isValid.message }
-    } else {
-      const result = await this.usersModels.updateById(id, updateData)
-
-      return { ok: isValid.ok, result }
-    }
+    return { ok: true, result }
   }
 
   async removeById(id: number) {
-    return await this.usersModels.remove(id)
+    return await Models.UsersModel.remove(id)
   }
 }

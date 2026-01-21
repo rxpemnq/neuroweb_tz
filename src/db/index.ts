@@ -1,6 +1,8 @@
 import * as dotenv from 'dotenv'
 import { DataSource } from 'typeorm'
 import { Users } from '../models/users/entity/users.entity'
+import { Tokens } from '../models/tokens/entity/tokens.entity'
+import { Sessions } from '../models/sessions/entity/sessions.entity'
 
 dotenv.config()
 
@@ -11,8 +13,8 @@ export const postgreSqlDataSource = new DataSource({
   username: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || 'root',
   database: process.env.DB_NAME || 'postgres',
-  entities: [Users],
+  entities: [Users, Tokens, Sessions],
   synchronize: true,
-  dropSchema: true,
-  logging: true
+  dropSchema: false,
+  logging: false
 })
